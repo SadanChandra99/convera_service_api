@@ -1,0 +1,654 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "172.20.135.30:8080",
+      "description": "Docker Container IP"
+    }
+  ],
+  "tags": [
+    {
+      "name": "quick-quotes",
+      "description": "the quotes API"
+    },
+    {
+      "name": "dashboard",
+      "description": "the dashboard API"
+    },
+    {
+      "name": "products",
+      "description": "the products API"
+    }
+  ],
+  "paths": {
+    "/quick-quotes": {
+      "get": {
+        "tags": [
+          "quick-quotes"
+        ],
+        "operationId": "getQuickQuotes",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "query",
+            "description": "customer Id ",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": 1068914
+          },
+          {
+            "name": "correlationId",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Quotes response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuotesResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "quick-quotes"
+        ],
+        "operationId": "saveQuickQuote",
+        "parameters": [
+          {
+            "name": "correlationID",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QuoteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "quote response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/": {
+      "post": {
+        "tags": [
+          "dashboard"
+        ],
+        "operationId": "saveDashboards",
+        "parameters": [
+          {
+            "name": "correlationId",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Dashboard"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "dashboard response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardsResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/convera/product": {
+      "post": {
+        "tags": [
+          "products"
+        ],
+        "operationId": "saveProduct",
+        "parameters": [
+          {
+            "name": "correlationID",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "product response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/quick-quotes/{quoteId}": {
+      "get": {
+        "tags": [
+          "quick-quotes"
+        ],
+        "operationId": "getQuickQuote",
+        "parameters": [
+          {
+            "name": "quoteId",
+            "in": "path",
+            "description": "quoteId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "21cb32a7-cb11-421f-84f5-c245578a1406"
+          },
+          {
+            "name": "correlationID",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "QuoteResponse",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/{userId}": {
+      "get": {
+        "tags": [
+          "dashboard"
+        ],
+        "operationId": "getDashboards",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "User Id ",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 1
+          },
+          {
+            "name": "correlationId",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "dashboard response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardsResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/convera/product/{id}": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "operationId": "getProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "numeric product id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "example": 1
+          },
+          {
+            "name": "correlationID",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "product response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Quote": {
+        "type": "object",
+        "properties": {
+          "quoteId": {
+            "type": "string"
+          },
+          "customerId": {
+            "type": "string"
+          },
+          "receiveCurrency": {
+            "type": "string"
+          },
+          "payCurrency": {
+            "type": "string"
+          },
+          "specifiedAmount": {
+            "type": "number"
+          },
+          "specifiedCurrency": {
+            "type": "string"
+          },
+          "valueDate": {
+            "type": "string"
+          },
+          "customerRate": {
+            "type": "number"
+          },
+          "customerRateInverted": {
+            "type": "number"
+          },
+          "baseCurrency": {
+            "type": "string"
+          },
+          "costRate": {
+            "type": "number"
+          },
+          "receiveAmount": {
+            "type": "number"
+          },
+          "payAmount": {
+            "type": "number"
+          },
+          "expirationInterval": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "forwardPoints": {
+            "type": "number"
+          },
+          "salesMargin": {
+            "type": "number"
+          }
+        }
+      },
+      "QuoteResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Quote"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/ResponseMetadata"
+          }
+        }
+      },
+      "ResponseError": {
+        "type": "object",
+        "properties": {
+          "errorCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "errorMessage": {
+            "type": "string"
+          },
+          "errorDetails": {
+            "type": "string"
+          },
+          "serviceName": {
+            "type": "string"
+          }
+        }
+      },
+      "ResponseMetadata": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "statusDescription": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResponseError"
+            }
+          },
+          "correlationId": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/ResponseMetadata"
+          }
+        }
+      },
+      "QuoteRequest": {
+        "required": [
+          "customerId",
+          "payCurrency",
+          "payReceive",
+          "receiveCurrency",
+          "specifiedAmount",
+          "specifiedCurrency"
+        ],
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "type": "string"
+          },
+          "payCurrency": {
+            "type": "string"
+          },
+          "receiveCurrency": {
+            "type": "string"
+          },
+          "specifiedCurrency": {
+            "type": "string"
+          },
+          "specifiedAmount": {
+            "type": "number"
+          },
+          "payReceive": {
+            "type": "string"
+          }
+        }
+      },
+      "Dashboard": {
+        "required": [
+          "height",
+          "user_id",
+          "widget_index",
+          "widget_name",
+          "width",
+          "x",
+          "y"
+        ],
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "widget_name": {
+            "type": "string"
+          },
+          "widget_index": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "x": {
+            "type": "string"
+          },
+          "y": {
+            "type": "string"
+          },
+          "width": {
+            "type": "string"
+          },
+          "height": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      },
+      "DashboardsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Dashboard"
+            }
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/ResponseMetadata"
+          }
+        }
+      },
+      "Product": {
+        "required": [
+          "description",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "product_status": {
+            "type": "string",
+            "enum": [
+              "available",
+              "sold-out"
+            ]
+          }
+        }
+      },
+      "ProductResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Product"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/ResponseMetadata"
+          }
+        }
+      },
+      "QuotesResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Quote"
+            }
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/ResponseMetadata"
+          }
+        }
+      }
+    }
+  }
+}

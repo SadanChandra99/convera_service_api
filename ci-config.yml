@@ -1,0 +1,10 @@
+version: 1
+type: maven
+resolver:
+  snapshotRepo: convera-platform-libs-snapshot
+  releaseRepo: convera-platform-libs-release
+  serverID: artifactory
+deployer:
+  snapshotRepo: convera-platform-libs-snapshot-local
+  releaseRepo: convera-platform-libs-release-local
+  serverID: artifactory

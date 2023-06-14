@@ -1,0 +1,71 @@
+{
+  "type": "record",
+  "name": "PaymentEvent",
+  "namespace": "com.convera.avro.schemas",
+  "fields": [
+    {
+      "name": "eventId",
+      "type": "string"
+    },
+    {
+      "name": "eventType",
+      "type": "string"
+    },
+    {
+      "name": "transactionAccountId",
+      "type": "string"
+    },
+    {
+      "name": "parentAccountId",
+      "type": "string"
+    },
+    {
+      "name": "occurredOn",
+      "type": {
+        "type": "long",
+        "logicalType": "timestamp-millis"
+      },
+      "doc": "The timestamp for when the event was created"
+    },
+    {
+      "name": "externalPaymentId",
+      "type": "string"
+    },
+    {
+      "name": "paymentTransactionStatus",
+      "type": "string"
+    },
+    {
+      "name": "paymentTransactionStatusReason",
+      "type": [
+              "null",
+              "string"
+            ]
+    },
+    {
+      "name": "receiveAmount",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 20,
+        "scale": 2
+      }
+    },
+    {
+      "name": "receiveCurrencyCode",
+      "type": "string"
+    },
+    {
+      "name": "payeeId",
+      "type": "string"
+    },
+    {
+      "name": "payeeName",
+      "type": "string"
+    },
+    {
+      "name": "paymentConfirmationNumber",
+      "type": "string"
+    }
+  ]
+}

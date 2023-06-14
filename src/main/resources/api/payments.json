@@ -1,0 +1,801 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "https://order.platform.dev-core.aws.converadev.com",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/orders/customers/payment-details/batchGet": {
+      "post": {
+        "tags": [
+          "Payment"
+        ],
+        "summary": "Get Payments Details by Transaction Account Id",
+        "operationId": "getPaymentDetailsByTransactionAccountId",
+        "parameters": [
+          {
+            "name": "startIndex",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 100
+            }
+          },
+          {
+            "name": "correlationId",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PaymentDetailsRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponse"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Get Payments Details by Transaction Account Id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaymentDetailsAndPayeeesResponseBean"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "unexpected error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CommonResponseObject": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/ResponseMetadata"
+          }
+        }
+      },
+      "ResponseError": {
+        "type": "object",
+        "properties": {
+          "errorCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "errorMessage": {
+            "type": "string"
+          },
+          "errorDetails": {
+            "type": "string"
+          },
+          "serviceName": {
+            "type": "string"
+          }
+        }
+      },
+      "ResponseMetadata": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "statusDescription": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResponseError"
+            }
+          },
+          "correlationId": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/ResponseMetadata"
+          }
+        }
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "branchName": {
+            "type": "string"
+          },
+          "streetAddress1": {
+            "type": "string"
+          },
+          "streetAddress2": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "province": {
+            "type": "string"
+          },
+          "postalCode": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          }
+        }
+      },
+      "BankDetail": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "bankName": {
+            "type": "string"
+          },
+          "bankAccountNumber": {
+            "type": "string"
+          },
+          "bankAccountType": {
+            "type": "string"
+          },
+          "routingCode": {
+            "type": "string"
+          },
+          "swiftCode": {
+            "type": "string"
+          },
+          "bankAccountNickName": {
+            "type": "string"
+          },
+          "bankAccountVendorId": {
+            "type": "string"
+          },
+          "bankAccountValidationStatus": {
+            "type": "boolean"
+          },
+          "bankAccountValidationStatusDescription": {
+            "type": "string"
+          },
+          "achRoutingCode": {
+            "type": "string"
+          },
+          "taxId": {
+            "type": "string"
+          },
+          "intermediaryBank": {
+            "$ref": "#/components/schemas/IntermediaryBank"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "paymentInformation": {
+            "$ref": "#/components/schemas/PaymentInformation"
+          }
+        }
+      },
+      "Contact": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "type": "string"
+          },
+          "occupation": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "phoneNumberType": {
+            "type": "string"
+          },
+          "contactFirstName": {
+            "type": "string"
+          },
+          "contactLastName": {
+            "type": "string"
+          },
+          "contactMiddleName": {
+            "type": "string"
+          },
+          "authorizedUser1": {
+            "type": "string"
+          },
+          "authorizedUser2": {
+            "type": "string"
+          },
+          "authorizedUser3": {
+            "type": "string"
+          },
+          "identification": {
+            "$ref": "#/components/schemas/Identification"
+          }
+        }
+      },
+      "EmailRecipient": {
+        "type": "object",
+        "properties": {
+          "emailId": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          }
+        }
+      },
+      "FileMetadata": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "attributeName": {
+            "type": "string"
+          },
+          "fileId": {
+            "type": "string"
+          },
+          "fileName": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "string"
+          },
+          "referenceId": {
+            "type": "string"
+          }
+        }
+      },
+      "Identification": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "idDocumentType": {
+            "type": "string",
+            "enum": [
+              "PASSPORT_NUMBER",
+              "TAX_ID",
+              "LICENCE_NUMBER"
+            ]
+          },
+          "idDocumentNumber": {
+            "type": "string"
+          },
+          "nationality": {
+            "type": "string"
+          },
+          "businessIdDocument": {
+            "type": "string"
+          },
+          "businessIdType": {
+            "type": "string"
+          }
+        }
+      },
+      "IntermediaryBank": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "bankName": {
+            "type": "string"
+          },
+          "bankAccountNumber": {
+            "type": "string"
+          },
+          "swiftCode": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          }
+        }
+      },
+      "Payee": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          },
+          "updatedBy": {
+            "type": "string"
+          },
+          "updatedAt": {
+            "type": "string"
+          },
+          "customerTransactionAccountId": {
+            "type": "string"
+          },
+          "payeeType": {
+            "type": "string",
+            "enum": [
+              "INDIVIDUAL",
+              "BUSINESS"
+            ]
+          },
+          "payeeSubType": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "vendorId": {
+            "type": "string"
+          },
+          "bankPaymentCountry": {
+            "type": "string"
+          },
+          "bankAccountCurrency": {
+            "type": "string"
+          },
+          "deliveryMethod": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "DRAFT",
+                "WIRE",
+                "ACH",
+                "LOCAL_CLEARING"
+              ]
+            }
+          },
+          "preferredDeliveryMethod": {
+            "type": "string",
+            "enum": [
+              "DRAFT",
+              "WIRE",
+              "ACH",
+              "LOCAL_CLEARING"
+            ]
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "middleName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "nickName": {
+            "type": "string"
+          },
+          "businessIndustry": {
+            "type": "string"
+          },
+          "businessName": {
+            "type": "string"
+          },
+          "employerName": {
+            "type": "string"
+          },
+          "localTradingName": {
+            "type": "string"
+          },
+          "favourite": {
+            "type": "boolean"
+          },
+          "payeeValidationStatus": {
+            "type": "boolean"
+          },
+          "payeeValidationStatusDescription": {
+            "type": "string"
+          },
+          "emailRecipients": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EmailRecipient"
+            }
+          },
+          "contact": {
+            "$ref": "#/components/schemas/Contact"
+          },
+          "address": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "bankDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BankDetail"
+            }
+          },
+          "fileMetadata": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FileMetadata"
+            }
+          },
+          "isPartialPayee": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PaymentDetailsAndPayeeesResponse": {
+        "type": "object",
+        "properties": {
+          "paymentDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PaymentReportingResponse"
+            }
+          },
+          "payees": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Payee"
+            }
+          }
+        }
+      },
+      "PaymentDetailsAndPayeeesResponseBean": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/PaymentDetailsAndPayeeesResponse"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/ResponseMetadata"
+          }
+        }
+      },
+      "PaymentInformation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "purposeOfPayment": {
+            "type": "string"
+          },
+          "forFurtherCredit": {
+            "type": "string"
+          },
+          "paymentReference": {
+            "type": "string"
+          },
+          "feeChargeType": {
+            "type": "string"
+          },
+          "purposeOfPaymentDescription": {
+            "type": "string"
+          }
+        }
+      },
+      "PaymentReportingResponse": {
+        "type": "object",
+        "properties": {
+          "paymentId": {
+            "type": "string"
+          },
+          "payeeId": {
+            "type": "string"
+          },
+          "payorId": {
+            "type": "string"
+          },
+          "parentAccountId": {
+            "type": "string"
+          },
+          "paymentStatus": {
+            "type": "string"
+          },
+          "payCurrency": {
+            "type": "string"
+          },
+          "payReceive": {
+            "type": "string"
+          },
+          "receiveCurrency": {
+            "type": "string"
+          },
+          "specifiedAmount": {
+            "type": "number"
+          },
+          "specifiedCurrency": {
+            "type": "string"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "createdOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "categoryPurposeParty": {
+            "type": "string"
+          },
+          "chargeAmount": {
+            "type": "number"
+          },
+          "chargeBearerFlag": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "chargeBearerType": {
+            "type": "string"
+          },
+          "chargeCurrencyCode": {
+            "type": "string"
+          },
+          "confirmationNumber": {
+            "type": "string"
+          },
+          "exchangeRate": {
+            "type": "number"
+          },
+          "externalPaymentId": {
+            "type": "string"
+          },
+          "forwardingAgentAddressLine": {
+            "type": "string"
+          },
+          "forwardingAgentCountryCode": {
+            "type": "string"
+          },
+          "forwardingAgentCountrySubdivisionCode": {
+            "type": "string"
+          },
+          "forwardingAgentFinInstitutionName": {
+            "type": "string"
+          },
+          "forwardingAgentPostalCode": {
+            "type": "string"
+          },
+          "forwardingAgentTownName": {
+            "type": "string"
+          },
+          "initiatingPartyName": {
+            "type": "string"
+          },
+          "instructionsCodeForBank": {
+            "type": "string"
+          },
+          "instructionsForBank": {
+            "type": "string"
+          },
+          "lastSanctionsCheckOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastUpdatedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "paymentEndToEndTarnsactionId": {
+            "type": "string"
+          },
+          "paymentInternalTransactionId": {
+            "type": "string"
+          },
+          "paymentMethod": {
+            "type": "string"
+          },
+          "paymentReference": {
+            "type": "string"
+          },
+          "paymentReleaseStatus": {
+            "type": "string"
+          },
+          "paymentTransactionServiceLevelParty": {
+            "type": "string"
+          },
+          "paymentTransactionStatusCode": {
+            "type": "string"
+          },
+          "paymentTransactionStatusId": {
+            "type": "string"
+          },
+          "paymentTransactionStatusReasonCode": {
+            "type": "string"
+          },
+          "paymentTransactionStatusReasonDesc": {
+            "type": "string"
+          },
+          "purposeCode": {
+            "type": "string"
+          },
+          "purposeDescription": {
+            "type": "string"
+          },
+          "receiverBic": {
+            "type": "string"
+          },
+          "releaseStatus": {
+            "type": "string"
+          },
+          "remittanceInformation": {
+            "type": "string"
+          },
+          "remittanceType": {
+            "type": "string"
+          },
+          "requestedExecutionDate": {
+            "type": "string"
+          },
+          "sanctionsCheckPassed": {
+            "type": "boolean"
+          },
+          "transactionAccountId": {
+            "type": "string"
+          },
+          "validationPassed": {
+            "type": "boolean"
+          },
+          "internalOrderId": {
+            "type": "string"
+          },
+          "externalOrderId": {
+            "type": "string"
+          },
+          "orderStatus": {
+            "type": "string"
+          },
+          "releaseDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "totalNumberOfTransactions": {
+            "type": "number"
+          },
+          "totalAmountOfTransactions": {
+            "type": "number"
+          }
+        }
+      },
+      "PaymentDetailsRequest": {
+        "type": "object",
+        "properties": {
+          "transactionAccountId": {
+            "type": "string"
+          },
+          "parentAccountId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "startTimestamp": {
+            "type": "string"
+          },
+          "endTimestamp": {
+            "type": "string"
+          },
+          "sortOrder": {
+            "type": "string"
+          },
+          "statuses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "paymentIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "payeeIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

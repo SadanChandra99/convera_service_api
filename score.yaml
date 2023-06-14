@@ -1,0 +1,17 @@
+---
+apiVersion: score.dev/v1b1
+
+metadata:
+  name: convera-dashboard-api
+
+containers:
+  convera-dashboard-api:
+    image: imageurl
+    variables:
+    resources:                              # (Optional) CPU and memory resources needed
+      limits:                               #    - (Optional) Maximum allowed
+        memory: "2048Mi"
+        #cpu: "500m"
+      requests:                             #    - (Optional) Minimal required
+        memory: "1024Mi"
+        #cpu: "250m"

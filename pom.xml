@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.convera</groupId>
+        <artifactId>api-spring-boot-starter-parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath/>
+    </parent>
+
+  <!--  <groupId>com.convera</groupId>  -->
+    <artifactId>service-api</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>jar</packaging>
+    <description>Service Api</description>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>0.2.3</version>
+        </dependency>
+
+
+        <!-- ADDED ,.........................................-->
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <!--  <version>2.9.1</version> -->
+        </dependency>
+        <dependency>
+            <groupId>com.datadoghq</groupId>
+            <artifactId>dd-trace-api</artifactId>
+            <version>0.104.0</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.convera</groupId>
+            <artifactId>convera-rest-library</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+<<<<<<< HEAD
+      -->
+      
+      
+      
+      
+       <dependency>
+            <groupId>com.convera</groupId>
+            <artifactId>convera-rest-library</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        
+        
+=======
+
+
+>>>>>>> 3ce2f843ef84df5ca9476f2325af492689de7228
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>io.swagger.parser.v3</groupId>
+            <artifactId>swagger-parser</artifactId>
+            <version>2.0.33</version>
+        </dependency>
+<<<<<<< HEAD
+         <!-- The Swagger UI page will then be available at http://server:port/context-path/swagger-ui.html and
+        the OpenAPI description will be available at the following url for json format:
+        http://server:port/context-path/v3/api-docs-->
+    <dependency>
+        <groupId>org.springdoc</groupId>
+        <artifactId>springdoc-openapi-ui</artifactId>
+        <version>1.6.9</version>
+    </dependency>
+    
+    
+
+
+    
+                          <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-cache</artifactId>
+    <version>2.4.3</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-redis</artifactId>
+	
+    <version>2.4.3</version>
+</dependency>  
+
+
+				<!--	<dependency>
+						<groupId>redis.clients</groupId>
+						<artifactId>jedis</artifactId>
+						<version>3.3.0</version>
+					</dependency>  -->
+  
+=======
+        <!-- The Swagger UI page will then be available at http://server:port/context-path/swagger-ui.html and
+       the OpenAPI description will be available at the following url for json format:
+       http://server:port/context-path/v3/api-docs-->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.6.9</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+            <version>2.4.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <version>2.4.3</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
+        </dependency>
+
+>>>>>>> 3ce2f843ef84df5ca9476f2325af492689de7228
+
+        <!-- ADDED...................................................-->
+        <dependency>
+            <groupId>com.convera</groupId>
+            <artifactId>convera-event-publisher</artifactId>
+            <version>1.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-simple</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+            <version>1.11.1</version>
+        </dependency>
+
+
+    </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.avro</groupId>
+                <artifactId>avro-maven-plugin</artifactId>
+                <version>1.11.1</version>
+                <executions>
+                    <execution>
+                        <id>schemas</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>schema</goal>
+                            <goal>protocol</goal>
+                            <goal>idl-protocol</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirectory>${project.basedir}/src/main/resources/avro/</sourceDirectory>
+                            <outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
+                            <enableDecimalLogicalType>true</enableDecimalLogicalType>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>6.0.1</version>
+                <executions>
+                    <execution>
+                        <id>product</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/api/postgress-data-api-swagger-v1.json
+                            </inputSpec>
+                            <generatorName>java</generatorName>
+                            <!-- Specify the package names for api and model-->
+                            <apiPackage>com.convera.product.data.api</apiPackage>
+                            <modelPackage>com.convera.product.data.model</modelPackage> 
+                            <invokerPackage>com.convera.product.data.invoker</invokerPackage>
+                            <!-- Ignore tests creation is generated sources -->
+                            <generateModelTests>false</generateModelTests>
+                            <generateApiTests>false</generateApiTests>
+                            <configOptions>
+<<<<<<< HEAD
+                             <serializableModel>true</serializableModel>
+    						<serializationLibrary>jackson</serializationLibrary> 
+=======
+                                <serializableModel>true</serializableModel>
+                                <serializationLibrary>jackson</serializationLibrary>
+>>>>>>> 3ce2f843ef84df5ca9476f2325af492689de7228
+                                <dateLibrary>java8-localdatetime</dateLibrary>
+                                <!-- Apply additional class level annotations -->
+                                <additionalModelTypeAnnotations>@lombok.AllArgsConstructor
+                                </additionalModelTypeAnnotations>
+                            </configOptions>
+                            <library>resttemplate</library>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>payments</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/api/payments.json
+                            </inputSpec>
+                            <generatorName>java</generatorName>
+                            <!-- Specify the package names for api and model-->
+                            <apiPackage>com.convera.payments.data.api</apiPackage>
+                            <modelPackage>com.convera.payments.data.model</modelPackage>
+                            <invokerPackage>com.convera.payments.data.invoker</invokerPackage>
+                            <!-- Ignore tests creation is generated sources -->
+                            <generateModelTests>false</generateModelTests>
+                            <generateApiTests>false</generateApiTests>
+                            <configOptions>
+                                <serializableModel>true</serializableModel>
+                                <serializationLibrary>jackson</serializationLibrary>
+                                <dateLibrary>java8-localdatetime</dateLibrary>
+                                <!-- Apply additional class level annotations -->
+                                <additionalModelTypeAnnotations>@lombok.Builder @lombok.AllArgsConstructor
+                                    <![CDATA[ @com.fasterxml.jackson.annotation.JsonIgnoreProperties(ignoreUnknown \u003D true)]]>
+                                </additionalModelTypeAnnotations>
+                            </configOptions>
+                            <library>resttemplate</library>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.8</version>
+                <configuration>
+                    <excludes>
+                        <exclude>com/convera/product/configuration/*.*</exclude>
+                        <exclude>com/convera/product/data/model/*.*</exclude>
+                        <exclude>com/convera/product/data/invoker/*.*</exclude>
+                        <exclude>com/convera/product/data/invoker/auth/*.*</exclude>
+                        <exclude>com/convera/product/data/api/*.*</exclude>
+                        <exclude>META-INF/**</exclude>
+                        <exclude>com/convera/payments/data/api/*.*</exclude>
+                        <exclude>com/convera/payments/data/model/*.*</exclude>
+                        <exclude>com/convera/payments/data/invoker/*.*</exclude>
+                        <exclude>com/convera/payments/data/invoker/auth/*.*</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>jacoco-check</id>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule>
+                                    <element>PACKAGE</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>LINE</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.8</minimum>
+                                        </limit>
+                                    </limits>
+                                    <excludes>
+                                        <exclude>com.convera.product.configuration</exclude>
+                                        <exclude>com.convera.product.data.model</exclude>
+                                        <exclude>com.convera.product.data.invoker</exclude>
+                                        <exclude>com.convera.product.data.invoker.auth</exclude>
+                                        <exclude>com.convera.product.data.api</exclude>
+                                        <exclude>com.convera.product.exception</exclude>
+                                        <exclude>com.convera.product</exclude>
+                                        <exclude>com.convera.payments.data.api</exclude>
+                                        <exclude>com.convera.payments.data.model</exclude>
+                                        <exclude>com.convera.payments.data.invoker</exclude>
+                                        <exclude>com.convera.payments.data.invoker.auth</exclude>
+                                    </excludes>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>com.convera.product.configuration</exclude>
+                                <exclude>com.convera.product.data.model</exclude>
+                                <exclude>com.convera.product.data.invoker</exclude>
+                                <exclude>com.convera.product.data.invoker.auth</exclude>
+                                <exclude>com.convera.product.data.api</exclude>
+                                <exclude>com.convera.product.exception</exclude>
+                                <exclude>com.convera.product</exclude>
+                                <exclude>com.convera.payments.data.api</exclude>
+                                <exclude>com.convera.payments.data.model</exclude>
+                                <exclude>com.convera.payments.data.invoker</exclude>
+                                <exclude>com.convera.payments.data.invoker.auth</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>jacoco-report</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>com/convera/product/configuration/*.*</exclude>
+                                <exclude>com/convera/product/data/model/*.*</exclude>
+                                <exclude>com/convera/product/data/invoker/*.*</exclude>
+                                <exclude>com/convera/product/data/invoker/auth/*.*</exclude>
+                                <exclude>com/convera/product/data/api/*.*</exclude>
+                                <exclude>com/convera/product/*.*</exclude>
+                                <exclude>com/convera/payments/data/api/*.*</exclude>
+                                <exclude>com/convera/payments/data/model/*.*</exclude>
+                                <exclude>com/convera/payments/data/invoker/*.*</exclude>
+                                <exclude>com/convera/payments/data/invoker/auth/*.*</exclude>
+                            </excludes>
+                            <!--<excludes>
+                                <exclude>com.convera.product.configuration</exclude>
+                                <exclude>com.convera.product.data.model</exclude>
+                                <exclude>com.convera.product.data.invoker</exclude>
+                                <exclude>com.convera.product.data.invoker.auth</exclude>
+                                <exclude>com.convera.product.data.api</exclude>
+                                <exclude>com.convera.product.exception</exclude>
+                            </excludes>-->
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+<<<<<<< HEAD
+            
+            
+            
+            
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.8</version>
+                <configuration>
+                    <excludes>
+
+                        <exclude>com/convera/product/data/model/*.*</exclude>
+                        <exclude>com/convera/product/data/invoker/*.*</exclude>
+                        <exclude>com/convera/product/data/invoker/auth/*.*</exclude>
+                        <exclude>com/convera/product/data/api/*.*</exclude>
+                        <exclude>META-INF/**</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>jacoco-report</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>com/convera/product/data/model/*.*</exclude>
+                                <exclude>com/convera/product/data/invoker/*.*</exclude>
+                                <exclude>com/convera/product/data/invoker/auth/*.*</exclude>
+                                <exclude>com/convera/product/data/api/*.*</exclude>
+                                <exclude>META-INF/**</exclude>
+                            </excludes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+          
+  
+
+=======
+>>>>>>> 3ce2f843ef84df5ca9476f2325af492689de7228
+        </plugins>
+
+    </build>
+
+
+</project>

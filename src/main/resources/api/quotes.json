@@ -1,0 +1,464 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://internal-lb-quick-quotes-service-1232043684.us-east-1.elb.amazonaws.com:443",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "QuickQuote",
+      "description": "APIs handling quick quotes"
+    }
+  ],
+  "paths": {
+    "/quick-quotes": {
+      "get": {
+        "tags": [
+          "QuickQuote"
+        ],
+        "operationId": "getQuotes",
+        "parameters": [
+          {
+            "name": "customerId",
+            "in": "query",
+            "description": "customer ID",
+            "required": true,
+            "schema": {
+              "maxLength": 36,
+              "minLength": 0,
+              "type": "string"
+            },
+            "example": 1068914
+          },
+          {
+            "name": "correlationId",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuoteListResponseClass"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "QuickQuote"
+        ],
+        "operationId": "saveQuickQuote",
+        "parameters": [
+          {
+            "name": "correlationId",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateQuoteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuickQuoteResponseClass"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/quick-quotes/{id}": {
+      "get": {
+        "tags": [
+          "QuickQuote"
+        ],
+        "operationId": "getQuote",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "quote ID",
+            "required": true,
+            "schema": {
+              "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+              "type": "string"
+            },
+            "example": "f65c8b81-d1dd-4e66-a4f0-7caaeab7e531"
+          },
+          {
+            "name": "correlationId",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QuickQuoteResponseClass"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "QuickQuoteResponse": {
+        "type": "object",
+        "properties": {
+          "quoteId": {
+            "type": "string"
+          },
+          "customerId": {
+            "type": "string"
+          },
+          "receiveCurrency": {
+            "type": "string"
+          },
+          "payCurrency": {
+            "type": "string"
+          },
+          "specifiedAmount": {
+            "type": "number"
+          },
+          "specifiedCurrency": {
+            "type": "string"
+          },
+          "valueDate": {
+            "type": "string"
+          },
+          "customerRate": {
+            "type": "number"
+          },
+          "customerRateInverted": {
+            "type": "number"
+          },
+          "baseCurrency": {
+            "type": "string"
+          },
+          "costRate": {
+            "type": "number"
+          },
+          "receiveAmount": {
+            "type": "number"
+          },
+          "payAmount": {
+            "type": "number"
+          },
+          "expirationInterval": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "forwardPoints": {
+            "type": "number"
+          },
+          "salesMargin": {
+            "type": "number"
+          }
+        }
+      },
+      "QuickQuoteResponseClass": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/QuickQuoteResponse"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/ResponseMetadata"
+          }
+        }
+      },
+      "ResponseError": {
+        "type": "object",
+        "properties": {
+          "errorCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "errorMessage": {
+            "type": "string"
+          },
+          "errorDetails": {
+            "type": "string"
+          },
+          "serviceName": {
+            "type": "string"
+          }
+        }
+      },
+      "ResponseMetadata": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "statusDescription": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ResponseError"
+            }
+          },
+          "correlationId": {
+            "type": "string"
+          }
+        }
+      },
+      "CommonResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object"
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/ResponseMetadata"
+          }
+        }
+      },
+      "CreateQuoteRequest": {
+        "required": [
+          "customerId",
+          "payCurrency",
+          "payReceive",
+          "receiveCurrency",
+          "specifiedAmount",
+          "specifiedCurrency"
+        ],
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "maxLength": 36,
+            "minLength": 0,
+            "type": "string",
+            "description": "Customer ID",
+            "example": "1068914"
+          },
+          "payCurrency": {
+            "pattern": "^[A-Z]{3}$",
+            "type": "string",
+            "description": "Pay Currency",
+            "example": "CAD"
+          },
+          "receiveCurrency": {
+            "pattern": "^[A-Z]{3}$",
+            "type": "string",
+            "description": "Receive Currency",
+            "example": "USD"
+          },
+          "specifiedCurrency": {
+            "pattern": "^[A-Z]{3}$",
+            "type": "string",
+            "description": "Specified Currency",
+            "example": "CAD"
+          },
+          "specifiedAmount": {
+            "type": "number",
+            "description": "Specified Amount",
+            "example": 150
+          },
+          "payReceive": {
+            "type": "string",
+            "description": "Pay Receive",
+            "example": "PAY"
+          }
+        }
+      },
+      "QuoteListResponseClass": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/QuoteResponse"
+            }
+          },
+          "metadata": {
+            "$ref": "#/components/schemas/ResponseMetadata"
+          }
+        }
+      },
+      "QuoteResponse": {
+        "type": "object",
+        "properties": {
+          "quoteId": {
+            "type": "string"
+          },
+          "customerId": {
+            "type": "string"
+          },
+          "receiveCurrency": {
+            "type": "string"
+          },
+          "payCurrency": {
+            "type": "string"
+          },
+          "specifiedAmount": {
+            "type": "number"
+          },
+          "specifiedCurrency": {
+            "type": "string"
+          },
+          "valueDate": {
+            "type": "string"
+          },
+          "customerRate": {
+            "type": "number"
+          },
+          "customerRateInverted": {
+            "type": "number"
+          },
+          "baseCurrency": {
+            "type": "string"
+          },
+          "costRate": {
+            "type": "number"
+          },
+          "receiveAmount": {
+            "type": "number"
+          },
+          "payAmount": {
+            "type": "number"
+          },
+          "expirationInterval": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "forwardPoints": {
+            "type": "number"
+          },
+          "salesMargin": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,165 @@
+image: maven:3.8.3-openjdk-17
+
+variables:
+  DOCKER_DRIVER: overlay
+  SPRING_PROFILES_ACTIVE: gitlab-ci
+  IMAGE_DIND: docker:20.10.8
+  BUILD_NAME: convera-dashboard-api
+  ART_REPO: $CONVERA_DOCKER_ART_REPO
+  DOCKER: $CONVERA_DOCKER_ART_REPO${CI_PROJECT_NAME}:$CI_JOB_ID
+  SYNK_AUTH_TOKEN: $SYNK_SCAN_AUTH_TOKEN
+  IMAGE_NAME: $CONVERA_DOCKER_ART_REPO${CI_PROJECT_NAME}
+  DOCKER_HOST: tcp://docker:2376
+  DOCKER_TLS_CERTDIR: "/certs" 
+  DOCKER_TLS_VERIFY: 1 
+  DOCKER_CERT_PATH: "$DOCKER_TLS_CERTDIR/client"
+
+stages:
+  - build
+  - test
+  - code-coverage
+  - package
+  - scan
+  - dockerize
+
+build-job:
+  stage: build
+  tags: 
+    - ironman-runner
+  before_script:
+    - echo $CI_PIPELINE_SOURCE
+    - echo $CI_MERGE_REQUEST_APPROVED
+    - echo $CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+    - echo $CI_TARGET_BRANCH_NAME
+  rules:
+    - if: ( $CI_PIPELINE_SOURCE == 'push' || $CI_PIPELINE_SOURCE == "merge_request_event" )
+  when: always
+  script:
+    - echo 'Building Project'
+    - 'mvn clean compile -s settings.xml'
+  artifacts:
+    paths:
+      - target/*.jar
+
+test-job:
+  stage: test
+  tags: 
+    - ironman-runner
+  rules:
+    - if: ( $CI_PIPELINE_SOURCE == 'push' || $CI_PIPELINE_SOURCE == "merge_request_event" )
+  when: always
+  script:
+    - echo 'Test under way'
+    - 'mvn test -s settings.xml'
+
+code-coverage-job:
+  stage: code-coverage
+  tags: 
+    - ironman-runner
+  rules:
+    - if: ( $CI_PIPELINE_SOURCE == 'push' || $CI_PIPELINE_SOURCE == "merge_request_event" )
+  when: always
+  script:
+    - echo 'code-coverage under way'
+    - 'mvn verify -s settings.xml'
+
+  artifacts:
+    when: always
+    paths:
+      - target/
+after_script:
+  - echo 'code coverage report :- https://convera.gitlab.io/-/platform/'$CI_PROJECT_NAME'/-/jobs/'$CI_JOB_ID'/artifacts/target/site/jacoco/index.html'
+
+package-job:
+  stage: package
+  tags: 
+    - ironman-runner
+  only:
+    - dev
+  before_script:
+    - echo $CI_PIPELINE_SOURCE
+    - echo 'Packaging under way:'
+    - curl -fL https://getcli.jfrog.io | sh
+    - ./jfrog config add artifactory --artifactory-url=$ARTIFACTORY_URL --user=$ARTIFACTORY_USER --password=$ARTIFACTORY_PASS
+    - ./jfrog rt c show
+    - export M2_HOME=/usr/share/maven
+    - sed -i 's,MAVEN_REPO_KEY,'"$MAVEN_SHAPSHOT_REPO"',g' ci-config.yml
+    - echo 'Packaging successful.'
+  script:
+    - echo 'Packaging Project'
+    - 'mvn package -DskipTests -s settings.xml'
+    - ./jfrog rt mvn "clean install -DskipTests" ci-config.yml --build-name=$BUILD_NAME --build-number=$CI_JOB_ID
+    - ./jfrog rt bce $BUILD_NAME $CI_JOB_ID
+    - ./jfrog rt bp $BUILD_NAME $CI_JOB_ID
+  artifacts:
+    paths:
+      - target/*.jar
+
+#scan-job:
+#  stage: scan
+#  rules:
+#   - if: ( $CI_PIPELINE_SOURCE == "merge_request_event"  &&  $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "dev"  &&  $CI_MERGE_REQUEST_APPROVED == 'true' )
+#
+#  when: always
+#  before_script:
+#    - echo 'snyk before_script'
+#     - echo 'snyk scanning under way:'
+#    - curl -fL https://static.snyk.io/cli/latest/snyk-linux -o snyk
+#    - chmod +x ./snyk
+#    - cp ./snyk /usr/local/bin/
+#    - ./snyk --version
+#    - echo 'snyk aunthentication start.'
+#    - ./snyk auth $SYNK_AUTH_TOKEN
+#    - echo 'snyk aunthentication completed.'
+#  script:
+#    - echo 'Snyk scanning starts.'
+#    - ./snyk --version
+#    #- ./snyk test
+#    - echo 'Snyk scanning completed successfully.'
+
+Dockerize-job:
+  image: $IMAGE_DIND
+  stage: dockerize
+  # tags: 
+  #   - ironman-runner
+  only:
+    - dev
+  before_script:
+    - apk add --update curl && rm -rf /var/cache/apk/*
+    - curl https://github.com/score-spec/score-humanitec/releases/download/0.3.0-rc1/score-humanitec_0.3.0-rc1_linux_amd64.tar.gz -o /tmp/score.tar.gz -L
+    - tar -xvzf /tmp/score.tar.gz -C /tmp
+    - cp /tmp/score-humanitec /usr/bin/
+    - chmod +x /usr/bin/score-humanitec
+    - curl -L https://github.com/a8m/envsubst/releases/download/v1.4.2/envsubst-Linux-x86_64 -o /usr/bin/envsubst
+    - chmod +x /usr/bin/envsubst
+  services:
+    - docker:20.10.8-dind
+  script:
+    - echo 'Dockerizing under way'
+    - docker build -t $DOCKER .
+    - echo 'docker build successfully.'
+
+    #- snyk container --app-vulns test ${DOCKER}
+    #- snyk container monitor ${DOCKER}
+    #- echo 'Snyk scanning completed successfully.'
+
+    - docker login -u $ARTIFACTORY_USER -p $ARTIFACTORY_PASS $ARTIFACTORY_URL
+    - echo 'docker login successfully.'
+
+    - docker push ${DOCKER}
+    - echo 'docker push successfully.'
+
+    - echo '------------------------------------------------------'
+    - echo 'Running Curl for publish the new image to Humanitec'
+    - | 
+        curl --request POST "https://api.humanitec.io/orgs/convera/artefact-versions" \
+        --header "Authorization: Bearer ${HUMANITEC_TOKEN}" \
+        --header "Content-Type: application/json" \
+        --data-raw "{\"name\": \"${IMAGE_NAME}\", \"version\": \"${CI_JOB_ID}\", \"type\": \"container\", \"commit\": \"${CI_COMMIT_SHA}\", \"ref\": \"refs/heads/${CI_COMMIT_REF_NAME}\"}"
+
+    - export SCORE_IMAGE="${IMAGE_NAME}:${CI_JOB_ID}" 
+    - echo 'Create temp score file for dev environment' 
+    - envsubst < override.yaml > override.dev.yaml 
+    - cat override.dev.yaml 
+    - echo 'deploy to dev env' 
+    - score-humanitec delta --org convera --app solutions --env development --token ${HUMANITEC_TOKEN} -f score.yaml --overrides override.dev.yaml --deploy

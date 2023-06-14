@@ -1,0 +1,17 @@
+version: '3'
+services:
+  db:
+   platform: linux/x86_64
+   container_name: convera-psql
+   image: postgres
+   restart: always
+   environment:
+      POSTGRES_DB: 'payments'
+      # You can use whatever password you like
+      POSTGRES_PASSWORD: 'myconvera'
+   ports:
+      # <Port exposed> : < Postgres Port running inside container>
+    - 5432:5432
+   expose:
+      # Opens port 5432 for other containers to connect
+    - 5432

@@ -1,0 +1,27 @@
+---
+containers:
+  convera-dashboard-api:
+    image: $SCORE_IMAGE
+    variables:
+      DASHBOARD_DATA_URL: "172.20.135.30:8080"
+    resources:                              # (Optional) CPU and memory resources needed
+      limits:                               #    - (Optional) Maximum allowed
+        memory: "1024Mi"
+        #cpu: "500m"
+      requests:                             #    - (Optional) Minimal required
+        memory: "512Mi"
+        #cpu: "250m"
+
+#resources:
+  # "test-alb-shared-dns":
+  #   type: dns
+  # "order-local-dns":
+  #   type: dns
+
+service:
+  ports:
+    p8081:
+      port: 8081
+      targetPort: 8081
+      
+      

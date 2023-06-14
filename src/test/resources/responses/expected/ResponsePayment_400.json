@@ -1,0 +1,18 @@
+{
+  "data": null,
+  "metadata": {
+    "timestamp": "2023-05-17T14:55:36.686Z",
+    "statusCode": 400,
+    "statusDescription": "Bad request",
+    "path": "/convera/payments",
+    "errors": [
+      {
+        "errorCode": 40000,
+        "errorMessage": "Bad request",
+        "errorDetails": "transactionAccountId is a mandatory field",
+        "serviceName": "Order Service"
+      }
+    ],
+    "correlationId": "2dc85961-69d8-469c-8657-dc4d16c765f9"
+  }
+}
